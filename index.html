@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Surprise 💌</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;font-family:Georgia,serif;background:linear-gradient(135deg,#ffd6e8,#e8d5ff);color:#632451}
+.screen{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:20px}
+.intro{position:absolute;z-index:10;text-align:center;width:min(560px,90vw);padding:45px 30px;border-radius:30px;background:rgba(255,255,255,.42);backdrop-filter:blur(18px);box-shadow:0 25px 70px #7c3d6840;animation:appear 1s}
+.envelope{font-size:82px;animation:float 2.5s infinite ease-in-out}
+.intro h1{font-size:clamp(30px,6vw,52px);margin:12px 0;color:#7c2d68}
+.intro p{font:16px Arial;color:#754465;margin:12px auto 25px}
+button{border:0;border-radius:999px;padding:15px 28px;background:linear-gradient(135deg,#d83f89,#8744c0);color:#fff;font:bold 15px Arial;cursor:pointer;box-shadow:0 12px 28px #8744c050;transition:.25s}
+button:hover{transform:translateY(-3px) scale(1.03)}
+.card{opacity:0;pointer-events:none;transform:scale(.9);text-align:center;width:min(760px,94vw);padding:45px 28px;border-radius:34px;background:#ffffff55;backdrop-filter:blur(18px);box-shadow:0 25px 80px #69365a35;transition:1s;position:relative;z-index:5}
+.card.show{opacity:1;pointer-events:auto;transform:scale(1)}
+.cake{font-size:78px;animation:bounce 2s infinite}
+.tag{font:bold 13px Arial;letter-spacing:4px;text-transform:uppercase;color:#a04d83}
+h2{font-size:clamp(40px,8vw,76px);margin:10px 0;background:linear-gradient(90deg,#8c286d,#e64d91,#8b45bd);color:transparent;background-clip:text;-webkit-background-clip:text}
+.name{font-size:clamp(25px,4vw,39px);font-weight:bold}
+.message{font:16px/1.7 Arial;max-width:570px;margin:20px auto;color:#6b3b5c}
+.hidden{display:none}
+.float{position:absolute;font-size:28px;animation:rise 7s linear infinite;opacity:.7}
+.f1{left:10%;bottom:-40px}.f2{left:30%;bottom:-80px;animation-delay:2s}.f3{right:25%;bottom:-60px;animation-delay:1s}.f4{right:8%;bottom:-40px;animation-delay:3s}
+@keyframes appear{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes float{50%{transform:translateY(-12px)}}
+@keyframes bounce{50%{transform:translateY(-8px) rotate(2deg)}}
+@keyframes rise{to{transform:translateY(-120vh) rotate(25deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="screen">
+  <div class="float f1">💗</div><div class="float f2">✨</div><div class="float f3">💖</div><div class="float f4">🎈</div>
+
+  <section class="intro" id="intro">
+    <div class="envelope">💌</div>
+    <h1>Someone made a little surprise for you...</h1>
+    <p>There’s a birthday message waiting inside. ✨</p>
+    <button onclick="openSurprise()">Open Your Surprise 💗</button>
+  </section>
+
+  <section class="card" id="card">
+    <div class="cake">🎂</div>
+    <div class="tag">A special wish for someone special</div>
+    <h2>Happy Birthday</h2>
+    <div class="name">Mifftahul Jannat 💕</div>
+    <p class="message">
+      May your special day be filled with beautiful moments, genuine smiles,
+      endless happiness and memories worth keeping forever. ✨<br>
+      Keep smiling, keep shining, and may this new chapter of your life
+      be even more beautiful than the last. 💗
+    </p>
+    <button onclick="celebrate()">Make a Wish 🎉</button>
+  </section>
+</div>
+
+<script>
+function openSurprise(){
+  document.getElementById('intro').style.opacity='0';
+  document.getElementById('intro').style.transform='scale(.8)';
+  setTimeout(()=>{
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('card').classList.add('show');
+  },650);
+}
+function celebrate(){
+  const symbols=['💖','✨','🎉','💕','🌸','⭐'];
+  for(let i=0;i<28;i++){
+    const s=document.createElement('span');
+    s.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    s.style.position='fixed';
+    s.style.left=(45+Math.random()*10)+'vw';
+    s.style.top=(50+Math.random()*10)+'vh';
+    s.style.fontSize=(18+Math.random()*22)+'px';
+    s.style.zIndex=20;
+    s.style.transition='1.8s ease-out';
+    document.body.appendChild(s);
+    requestAnimationFrame(()=>{
+      s.style.transform=`translate(${(Math.random()-.5)*700}px,${-300-Math.random()*450}px) rotate(${Math.random()*500}deg)`;
+      s.style.opacity=0;
+    });
+    setTimeout(()=>s.remove(),1900);
+  }
+}
+</script>
+</body>
+</html>
