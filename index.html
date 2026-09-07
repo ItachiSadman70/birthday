@@ -14,6 +14,27 @@ body{margin:0;overflow:hidden;font-family:Georgia,serif;background:linear-gradie
 .intro p{font:16px Arial;color:#754465;margin:12px auto 25px}
 button{border:0;border-radius:999px;padding:15px 28px;background:linear-gradient(135deg,#d83f89,#8744c0);color:#fff;font:bold 15px Arial;cursor:pointer;box-shadow:0 12px 28px #8744c050;transition:.25s}
 button:hover{transform:translateY(-3px) scale(1.03)}
+.button-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+.gift-btn{background:linear-gradient(135deg,#b65be8,#e64d91)}
+.gift-modal{position:fixed;inset:0;background:rgba(53,18,49,.42);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:.35s;z-index:50}
+.gift-modal.show{opacity:1;pointer-events:auto}
+.gift-box{width:min(620px,92vw);max-height:82vh;overflow:auto;padding:28px 22px;border-radius:28px;background:rgba(255,247,252,.96);box-shadow:0 25px 90px rgba(67,25,58,.35);text-align:center;transform:scale(.86) translateY(20px);transition:.4s;position:relative}
+.gift-modal.show .gift-box{transform:scale(1) translateY(0)}
+.close-gift{position:absolute;right:14px;top:12px;width:38px;height:38px;padding:0;background:#f1d5e8;color:#7c2d68;font-size:22px;box-shadow:none}
+.gift-title{margin:2px 35px 4px;font-size:clamp(27px,5vw,38px);color:#7c2d68}
+.gift-sub{font:14px Arial;color:#8a5472;margin:0 0 20px}
+.gifts{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.gift-item{padding:17px 10px;border-radius:20px;background:linear-gradient(145deg,#fff,#fce7f3);border:1px solid #f1c8dd;box-shadow:0 10px 25px #8b467020;animation:giftFloat 3s ease-in-out infinite}
+.gift-item:nth-child(2){animation-delay:.35s}.gift-item:nth-child(3){animation-delay:.7s}
+.gift-emoji{font-size:55px;display:block;animation:wiggle 2s infinite}
+.gift-item h3{margin:7px 0 4px;color:#7c2d68;font-size:18px}
+.gift-item p{margin:0;font:13px/1.45 Arial;color:#81536d}
+.gift-footer{margin:18px 0 0;color:#a04d83;font:italic 15px Georgia}
+.gift-particle{position:fixed;pointer-events:none;z-index:70;font-size:24px;animation:giftPop 1.7s ease-out forwards}
+@keyframes giftFloat{50%{transform:translateY(-6px)}}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+@keyframes giftPop{0%{transform:translate(0,0) scale(.6);opacity:1}100%{transform:translate(var(--x),var(--y)) rotate(260deg) scale(1.15);opacity:0}}
+@media(max-width:560px){.gifts{grid-template-columns:1fr}.gift-box{padding:25px 16px}.gift-emoji{font-size:48px}}
 .card{opacity:0;pointer-events:none;transform:scale(.9);text-align:center;width:min(760px,94vw);padding:45px 28px;border-radius:34px;background:#ffffff55;backdrop-filter:blur(18px);box-shadow:0 25px 80px #69365a35;transition:1s;position:relative;z-index:5}
 .card.show{opacity:1;pointer-events:auto;transform:scale(1)}
 .cake{font-size:78px;animation:bounce 2s infinite}
@@ -52,8 +73,37 @@ h2{font-size:clamp(40px,8vw,76px);margin:10px 0;background:linear-gradient(90deg
       Keep smiling, keep shining, and may this new chapter of your life
       be even more beautiful than the last. 💗
     </p>
-    <button onclick="celebrate()">Make a Wish 🎉</button>
+    <div class="button-row">
+      <button onclick="celebrate()">Make a Wish 🎉</button>
+      <button class="gift-btn" onclick="openGifts()">Your Gifts 🎁</button>
+    </div>
   </section>
+
+  <div class="gift-modal" id="giftModal" onclick="closeGifts(event)">
+    <div class="gift-box">
+      <button class="close-gift" onclick="closeGifts()">×</button>
+      <h2 class="gift-title">Your Gifts 🎁</h2>
+      <p class="gift-sub">A few little surprises, specially for you... 💕</p>
+      <div class="gifts">
+        <div class="gift-item">
+          <span class="gift-emoji">💐</span>
+          <h3>Flowers 🌸</h3>
+          <p>Because you deserve a world full of beautiful flowers and smiles.</p>
+        </div>
+        <div class="gift-item">
+          <span class="gift-emoji">🎂</span>
+          <h3>Birthday Cake 🕯️</h3>
+          <p>Sweet like your smile. Make a wish and let the magic begin!</p>
+        </div>
+        <div class="gift-item">
+          <span class="gift-emoji">🍫</span>
+          <h3>Chocolates 💝</h3>
+          <p>A little sweetness for your special day, because you deserve it.</p>
+        </div>
+      </div>
+      <div class="gift-footer">✨ Enjoy your little gifts, birthday girl! 💗 ✨</div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -64,6 +114,26 @@ function openSurprise(){
     document.getElementById('intro').classList.add('hidden');
     document.getElementById('card').classList.add('show');
   },650);
+}
+function openGifts(){
+  document.getElementById('giftModal').classList.add('show');
+  const symbols=['🌸','🌷','💐','💖','✨','🍫','🎀'];
+  for(let i=0;i<18;i++){
+    const s=document.createElement('span');
+    s.className='gift-particle';
+    s.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    s.style.left=(35+Math.random()*30)+'vw';
+    s.style.top=(45+Math.random()*20)+'vh';
+    s.style.setProperty('--x',((Math.random()-.5)*420)+'px');
+    s.style.setProperty('--y',((-120-Math.random()*330))+'px');
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1800);
+  }
+}
+function closeGifts(e){
+  if(!e || e.target.id==='giftModal' || e.target.classList.contains('close-gift')){
+    document.getElementById('giftModal').classList.remove('show');
+  }
 }
 function celebrate(){
   const symbols=['💖','✨','🎉','💕','🌸','⭐'];
